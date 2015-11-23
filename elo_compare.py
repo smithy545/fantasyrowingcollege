@@ -1,3 +1,5 @@
+# All the elo ratings functions used for the project. Still needs some work.
+
 def eloCompare(winner, loser, margin = 1, K = 32):
     # Expected rating of the winner and loser based on ELO formula (range 0-1)
     expectedWinner = 1 / (1 + 10.0**((loser - winner)/ 400.0))
