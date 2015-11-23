@@ -1,3 +1,7 @@
+# Runs through the races of all the teams in the "colleges" list
+# and calculates their elo ratings throughout the season, adding
+# them to the big crews excel spread sheet
+
 from openpyxl import load_workbook
 from elo_compare import *
 
