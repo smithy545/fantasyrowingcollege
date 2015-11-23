@@ -1,3 +1,5 @@
+# This file allows you to manually add an athlete to the sql database via console
+
 import sqlite3
 from types import *
 
