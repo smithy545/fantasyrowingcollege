@@ -1,6 +1,6 @@
 # fantasyrowingcollege
 
-So this is all my code college fantasy rowing code atm. It's a mish mash of really ugly elo rating coding that I did a while ago as an experiment and a little more refined roster scraping code that I recently did.
+So this is all my college fantasy rowing code atm. It's a mish mash of really ugly elo rating coding that I did a while ago as an experiment and a little more refined roster scraping code that I recently did.
 
 The points formula document is just a sketchpad for my ideas on how to develop points for each athlete after each race and it's not particularly scientific or fleshed out yet.
 
