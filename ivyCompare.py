@@ -1,3 +1,5 @@
+# Compares results from ivy league races and calculates elo ratings. Still needs work.
+
 from openpyxl import load_workbook
 from elo_compare import *
 from tabulate import tabulate
