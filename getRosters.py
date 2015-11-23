@@ -1,3 +1,5 @@
+# Scrapes all the athletes from the rosters of 24 ira schools
+
 from bs4 import BeautifulSoup
 from types import *
 import os, re, sqlite3
