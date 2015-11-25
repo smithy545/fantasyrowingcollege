@@ -444,10 +444,10 @@ def quotify(s):
 
 rosters = {}
 
-for filename in os.listdir("./roster files"):
+for filename in os.listdir("./rosters"):
     if not filename.endswith(".htm"):
         continue
-    f = open("roster files/" + filename, 'r') 
+    f = open("rosters/" + filename, 'r') 
     soup = BeautifulSoup(f.read(), "html.parser")
     f.close()
 
