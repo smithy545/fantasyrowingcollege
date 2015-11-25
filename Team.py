@@ -3,13 +3,13 @@ sys.path.append("sql/")
 from helpers import *
 
 class Team(object):
-    def __init__(self, name, league_id):
+    def __init__(self, name, league_id, id = -1):
         self.name = name
         self.league_id = league_id
-        self.athletes = []
 
-        self.executeSQL("INSERT INTO team (name, league_id) VALUES(" + quotify(self.name) + ", " + str(league_id) + ");")
-        
+        if id == -1:
+            self.executeSQL("INSERT INTO team (name, league_id) VALUES(" + quotify(self.name) + ", " + str(league_id) + ");")
+
     def executeSQL(self, command):
         conn = sqlite3.connect("teams.db")
         c = conn.cursor()
@@ -21,3 +21,6 @@ class Team(object):
             conn.close()
 
         return ret
+
+    def getAthletes(self):
+        return []

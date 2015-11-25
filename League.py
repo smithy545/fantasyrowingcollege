@@ -3,12 +3,14 @@ sys.path.append("sql/")
 from helpers import *
 
 class League(object):
-    def __init__(self, name, members = []):
+    def __init__(self, name, member_ids = []):
         try:
             self.executeSQL("INSERT INTO league (name) VALUES(" + quotify(name) + ");")
+            for id in member_ids:
+                self.add_member(id)
         except:
-            print "League already exists. Returning existing league..."
-
+            pass
+        
         self.name = name
         self.id = self.executeSQL("SELECT id FROM league WHERE name = " + quotify(name) + ";")[0][0]
 
@@ -23,6 +25,9 @@ class League(object):
             conn.close()
 
         return ret
+
+    def add_member(self, team_id):
+        self.executeSQL("UPDATE team set league_id = " + str(self.id) + " WHERE id = " + str(team_id))
 
     def get_members(self):
         return self.executeSQL("SELECT * FROM team JOIN league WHERE team.league_id = league.id AND league.id = " + str(self.id) + ";")
