@@ -1,3 +1,5 @@
+# I don't really remember what this does. I think it generates spreadsheet info to be used by the graphing functions.
+
 from openpyxl import load_workbook
 from elo_compare import *
 #from tabulate import tabulate

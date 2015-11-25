@@ -1,3 +1,5 @@
+# Just a file I was using to test the accuracy of my elo ratings functions
+
 import os
 from tabulate import tabulate
 second = 5
