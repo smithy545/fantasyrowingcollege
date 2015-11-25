@@ -71,7 +71,7 @@ class Team(object):
 
         return ret
 
-    def getAthletes(self):
+    def get_athletes(self):
         return []
 
 
@@ -103,13 +103,14 @@ class Athlete(object):
     def __unicode__(self):
         return unicode(self.first_name) + u" " + unicode(self.last_name)
 
-    def getAll(self):
+    @staticmethod
+    def getAll():
         conn = sqlite3.connect("teams.db")
         c = conn.cursor()
 
         athletes = []
 
-        for athlete in c.execute("SELECT * FROM athlete WHERE id = " + str(id) + ";").fetchall():
+        for athlete in c.execute("SELECT id FROM athlete;").fetchall():
             athletes.append(Athlete(athlete[0]))
 
         return athletes

@@ -26,28 +26,22 @@ def main():
     for id in teamIDs:
         teams.append(c.execute("SELECT * FROM team WHERE team.id = " + str(id[0]) + ";").fetchone())
 
-    raw_input("Press enter to start draft...")
-
+    screen = Menu("Available Athletes:", availableAthletes(draftingLeague))
     drafting = True
-    reverseOrder = False
-    screens = []
-    for i, team in enumerate(teams):
-        screens.append(Menu("Draft for Team #" + str(i+1), availableAthletes(draftingLeague)))
-
     while drafting:
         for i, team in enumerate(teams):
-            if reverseOrder:
-                screen = screens[len(teams)-i-1]
-            else:
-                screen = screens[i]
-            screen.display()
-            drafting = screen.get_input()
-            if not drafting:
-                break
-            elif drafting != True:
-                pass
+            print "Player " + str(i) + "'s Turn"
+            drafting = True
+            while drafting == True:
+                screen.display()
+                drafting = screen.get_input()
 
-        reverseOrder = not reverseOrder
+            if drafting:
+                print drafting
+                #team.addAthlete(drafting)
+            else:
+                break
+            
         teams.reverse()
 
     print "Congratulations! You have successfully completed the draft!"
@@ -68,22 +62,23 @@ def availableAthletes(league):
     return available
 
 class Menu(object):
-    def __init__(self, title, items):
+    def __init__(self, title, items, items_per_page = 15):
         self.title = title
         self.items = items
         self.page = 1
+        self.ipp = items_per_page
 
     def display(self):
         print self.title
-        for i, item in enumerate(self.items[(self.page-1)*15:self.page*15]):
-            print str(i + 15*(self.page-1) + 1) + ". " + str(item)
+        for i, item in enumerate(self.items[(self.page-1)*self.ipp:self.page*self.ipp]):
+            print str(i + self.ipp*(self.page-1) + 1) + ". " + str(item)
 
         print "Page", self.page
             
     def get_input(self):
         print "Choices:"
-        if self.page > 1 and self.page < len(self.items)/15:
-            options = ["Select Athlete", "Last Page", "Next Page"]
+        if self.page > 1 and self.page < len(self.items)/self.ipp:
+            options = ["Select Athlete", "Next Page", "Last Page"]
         elif self.page > 1:
             options = ["Select Athlete", "Last Page"]
         elif self.page < len(self.items)/15:
@@ -94,17 +89,25 @@ class Menu(object):
         for i, option in enumerate(options):
             print str(i+1) + ". " + option
 
-        choice = input("?") - 1
+        choice = -1
+        while choice < 0 or choice >= len(options):
+            try:
+                choice = input("?") - 1
+            except:
+                print "Invalid Input"
+        
         if options[choice] == "Next Page":
             self.page += 1
         elif options[choice] == "Last Page":
             self.page -= 1
         elif options[choice] == "Select Athlete":
+            self.page = 1
             athleteChoice = -1
-            while athleteChoice < 0 or athleteChoice >= len(self.items):
+            while athleteChoice <= 0 or athleteChoice >= len(self.items):
                 athleteChoice = input("Enter athlete number: ")
-            return self.items[athleteChoice]
-                
+            temp = self.items[athleteChoice-1]
+            del self.items[athleteChoice-1]
+            return temp
         elif options[choice] == "Quit":
             return False
 
