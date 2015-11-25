@@ -21,6 +21,8 @@ c.execute('''CREATE TABLE IF NOT EXISTS team (
 c.execute('''CREATE TABLE IF NOT EXISTS athlete_table (
                 id INTEGER PRIMARY KEY,
                 team_id INTEGER,
+                athlete_id INTEGER,
+                FOREIGN KEY(athlete_id) REFERENCES athlete(id),
                 FOREIGN KEY(team_id) REFERENCES team(id));'''
           )
 
