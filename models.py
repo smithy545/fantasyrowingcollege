@@ -71,9 +71,23 @@ class Team(object):
 
         return ret
 
-    def get_athletes(self):
-        return []
+    def add_athlete(self, athlete_id):
+        self.executeSQL("INSERT INTO team_athlete VALUES(" + str(self.id) + "," + str(athlete_id) + ");")
 
+    def get_athletes(self):
+        return [x[0] for x in self.executeSQL("SELECT team_athlete.athlete_id FROM team JOIN team_athlete WHERE team.id = team_athlete.team_id;")]
+
+    @staticmethod
+    def getAll():
+        conn = sqlite3.connect("teams.db")
+        c = conn.cursor()
+
+        teams = []
+
+        for team in c.execute("SELECT id FROM team;").fetchall():
+            teams.append(Team(id = team[0]))
+
+        return teams
 
 class Athlete(object):
     def __init__(self, id):

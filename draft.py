@@ -1,5 +1,6 @@
 import sqlite3, sys
 from models import *
+from types import *
 sys.path.append("sql/")
 from helpers import *
 
@@ -22,26 +23,27 @@ def main():
                         WHERE team.league_id = league.id AND \
                         league.id = " + str(draftingLeague.id) + ";").fetchall()
     teams = []
-    
-    for id in teamIDs:
-        teams.append(c.execute("SELECT * FROM team WHERE team.id = " + str(id[0]) + ";").fetchone())
+
+    for team_id in teamIDs:
+        teams.append(Team(id = team_id[0]))
 
     screen = Menu("Available Athletes:", availableAthletes(draftingLeague))
     drafting = True
-    while drafting:
+    turn = 1
+    while drafting and turn <= 24:
+        print "Turn #" + str(turn)
         for i, team in enumerate(teams):
-            print "Player " + str(i) + "'s Turn"
-            drafting = True
+            print "Player " + str(i+1) + "'s Turn"
             while drafting == True:
                 screen.display()
                 drafting = screen.get_input()
-
+                
             if drafting:
-                print drafting
-                #team.addAthlete(drafting)
+                team.add_athlete(drafting.id)
+                drafting = True
             else:
                 break
-            
+        turn += 1
         teams.reverse()
 
     print "Congratulations! You have successfully completed the draft!"
@@ -54,7 +56,7 @@ def availableAthletes(league):
     available = []
     for team in league.get_members():
         for athlete in team.get_athletes():
-            takenAthletes.append(athlete.id)
+            takenAthletes.append(athlete)
     for athlete in Athlete.getAll():
         if athlete.id not in takenAthletes:
             available.append(athlete)
