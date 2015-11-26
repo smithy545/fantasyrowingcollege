@@ -8,7 +8,7 @@ Quick guide to the repo:
 
 - The big crews contains a spreadsheet with some pretty fleshed out race results from many teams in the IRA over the 2014-2015 season. It was all typed in by hand and was a bitch to compile. In the spreadsheet there is also the elo ratings over the course of the seasons for these teams
 
-- The graphics folder contains various visuals to check the accuracy of the points annd elo functions
+- The graphics folder contains various visuals to check how the elo and points functions map against what I expected
 
 - The code is in .py files, the databases are .db and there's a scratch word file I was using to test formula stuff as a .docx
 
