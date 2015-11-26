@@ -1,4 +1,4 @@
-import sqlite3, sys
+import sqlite3, sys, os
 from models import *
 from types import *
 sys.path.append("sql/")
@@ -31,9 +31,10 @@ def main():
     drafting = True
     turn = 1
     while drafting and turn <= 24:
-        print "Turn #" + str(turn)
         for i, team in enumerate(teams):
-            print "Player " + str(i+1) + "'s Turn"
+            os.system("cls")
+            print "Turn #" + str(turn)
+            print str(team) + "'s Turn"
             while drafting == True:
                 screen.display()
                 drafting = screen.get_input()
@@ -106,7 +107,10 @@ class Menu(object):
             self.page = 1
             athleteChoice = -1
             while athleteChoice <= 0 or athleteChoice >= len(self.items):
-                athleteChoice = input("Enter athlete number: ")
+                try:
+                    athleteChoice = input("Enter athlete number: ")
+                except:
+                    print "Invalid Input"
             temp = self.items[athleteChoice-1]
             del self.items[athleteChoice-1]
             return temp
