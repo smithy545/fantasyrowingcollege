@@ -79,13 +79,13 @@ class Menu(object):
     def display(self):
         print self.title
         for i, item in enumerate(self.items[(self.page-1)*self.ipp:self.page*self.ipp]):
-            print str(i + self.ipp*(self.page-1) + 1) + ". " + str(item)
+            print unicode(i + self.ipp*(self.page-1) + 1) + u". " + unicode(item)
 
         print "Page", self.page
             
     def get_input(self):
         print "Choices:"
-        if self.page > 1 and self.page < len(self.items)/self.ipp:
+        if self.page > 1 and self.page <= len(self.items)/self.ipp:
             options = ["Next Page", "Last Page", "View Athlete", "Select Athlete", ]
         elif self.page > 1:
             options = ["Last Page", "View Athlete", "Select Athlete"]
