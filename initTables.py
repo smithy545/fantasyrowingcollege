@@ -49,6 +49,8 @@ try:
         athlete = [quotify(x) for x in athlete]
         c.execute(u"INSERT INTO athlete VALUES(" + u','.join(athlete) + u");")
     conn.commit()
+except:
+    print "Could not insert athletes. Athlete table may already be initialized."
 finally:
     conn.close()
     conn2.close()
