@@ -1,3 +1,6 @@
+# Generates a season schedule for a given league in a series of tuples
+# Needs to be developed to more specifically apply to fantasy rowing
+
 import sys, itertools, random
 from models import League
 

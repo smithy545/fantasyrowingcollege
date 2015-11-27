@@ -2,6 +2,7 @@ import sqlite3, sys
 sys.path.append("sql/")
 from helpers import *
 
+# The class that interfaces with the SQL league table
 class League(object):
     def __init__(self, name, member_ids = []):
         try:
@@ -38,6 +39,7 @@ class League(object):
     def get_members(self):
         return [Team(id=x[0]) for x in self.executeSQL("SELECT team.id FROM team JOIN league WHERE team.league_id = league.id AND league.id = " + str(self.id) + ";")]
 
+# The class that interfaces with the SQL team table
 class Team(object):
     def __init__(self, name = None, league_id = None, id = -1):
         if id == -1 and name and league_id:
@@ -89,6 +91,7 @@ class Team(object):
 
         return teams
 
+# The class that interfaces with the SQL athlete table
 class Athlete(object):
     def __init__(self, id):
         conn = sqlite3.connect("teams.db")

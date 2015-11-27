@@ -1,3 +1,5 @@
+# A basic command line implementation of a drafting system
+
 import sqlite3, sys, os
 from models import *
 from types import *

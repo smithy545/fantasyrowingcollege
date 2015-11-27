@@ -1,3 +1,5 @@
+# Sets up the SQL database
+
 import sqlite3, sys
 sys.path.append("sql/")
 from helpers import *

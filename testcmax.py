@@ -1,3 +1,5 @@
+# Develops graphs of the points formula over various cmax/margin of victory ranges
+
 import matplotlib.pyplot as plt
 
 # Not upset
