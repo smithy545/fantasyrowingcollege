@@ -12,8 +12,11 @@ def main():
     c = conn.cursor()
 
     league_name = False
+
     
     while not league_name:
+        for i, league in enumerate(c.execute("SELECT name FROM league;").fetchall()):
+            print str(i+1) + ". " + league[0]
         league_name = raw_input("Enter the name of your league: ")
         if c.execute("SELECT * FROM league WHERE name = " + quotify(league_name) + ";").fetchall():
             draftingLeague = League(league_name)
