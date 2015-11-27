@@ -14,6 +14,7 @@ for cmax in range(0, 20):
     plt.ylabel('Points earned')
     plt.plot([x - cmax for x in range(0,60)],winner, 'rx')
     plt.plot([x - cmax for x in range(0,60)],loser, 'bo')
+    plt.legend(["Winner","Loser"], loc = 'upper left')
 
 plt.show()
 
@@ -29,5 +30,6 @@ for cmax in range(0, 20):
     plt.ylabel('Points earned')
     plt.plot([x - cmax for x in range(0,60)],winner, 'rx')
     plt.plot([x - cmax for x in range(0,60)],loser,'bo')
+    plt.legend(["Winner","Loser"], loc = 'upper left')
 
 plt.show()
