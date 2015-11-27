@@ -2,7 +2,7 @@
 
 Quick guide to the repo:
 
-- Roster files are the html pages for the rosters of the 24 IRA schools that competed in the mens V8 at IRA's
+- Roster files are the html pages for the rosters of the 24 IRA schools that competed in the mens V8 at IRA's as well as the scraper files that grab the athletes from them
 
 - Sql just contains some test databases I was fooling around with while figuring out sqlite3 as well as helper methods I use to run sql commands
 
