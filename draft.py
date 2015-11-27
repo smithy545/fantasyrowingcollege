@@ -86,11 +86,11 @@ class Menu(object):
     def get_input(self):
         print "Choices:"
         if self.page > 1 and self.page < len(self.items)/self.ipp:
-            options = ["Select Athlete", "Next Page", "Last Page"]
+            options = ["Next Page", "Last Page", "View Athlete", "Select Athlete", ]
         elif self.page > 1:
-            options = ["Select Athlete", "Last Page"]
+            options = ["Last Page", "View Athlete", "Select Athlete"]
         elif self.page < len(self.items)/15:
-            options = ["Select Athlete", "Next Page"]
+            options = ["Next Page", "View Athlete", "Select Athlete"]
 
         options.append("Quit")
 
@@ -108,6 +108,24 @@ class Menu(object):
             self.page += 1
         elif options[choice] == "Last Page":
             self.page -= 1
+        elif options[choice] == "View Athlete":
+            athleteChoice = -1
+            while athleteChoice <= 0 or athleteChoice >= len(self.items):
+                try:
+                    athleteChoice = input("Enter athlete number: ")
+                except:
+                    print "Invalid Input"
+            temp = self.items[athleteChoice-1].getInfo()
+            print temp[1], temp[2]
+            print "University:", temp[7]
+            if temp[3]:
+                print "Height(in): ", temp[3]
+            if temp[4]:
+                print "Weight(lbs): ", temp[4]
+            if temp[5]:
+                print "Hometown: ", temp[5]
+            raw_input("Press enter to return...")
+            
         elif options[choice] == "Select Athlete":
             self.page = 1
             athleteChoice = -1

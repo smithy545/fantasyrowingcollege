@@ -112,8 +112,12 @@ class Athlete(object):
         self.major = info[10]
         self.side = info[11]
 
+        self.info = info
         conn.close()
 
+    def getInfo(self):
+        return self.info
+            
     def __str__(self):
         return self.first_name + " " + self.last_name
 
