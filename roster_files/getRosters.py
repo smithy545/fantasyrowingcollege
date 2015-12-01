@@ -29,6 +29,8 @@ def getSlash(s):
         return [s.split("/")[0].strip(), ""]
     return [s.split("/")[0].strip(), s.split("/")[1].strip()]
 
+
+
 def Brown(soup):
     return soup.find("div", "roster").table.tbody
 
@@ -328,11 +330,11 @@ def SyracuseSanitize(data):
     info["link"] = data[1]
     info["first_name"] = data[2].split(" ")[0]
     info["last_name"] = data[2].split(" ")[1]
-    info["year"] = yearShortToLong(data[4])
-    info["hometown"] = getSlash(data[5])[0]
-    info["high_school"] = getSlash(data[5])[1]
-    info["height"] = toInches(data[2])
-    info["weight"] = data[3]
+    info["year"] = yearShortToLong(data[5])
+    info["hometown"] = getSlash(data[6])[0]
+    info["high_school"] = getSlash(data[6])[1]
+    info["height"] = toInches(data[3])
+    info["weight"] = data[4]
     return info
 
 def Washington(soup):
