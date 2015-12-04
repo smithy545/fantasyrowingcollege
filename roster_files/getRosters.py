@@ -210,10 +210,10 @@ def NavySanitize(data):
     info["first_name"] = data[2].split(" ")[0]
     info["last_name"] = data[2].split(" ")[1]
     info["year"] = yearShortToLong(data[4])
-    info["hometown"] = getSlash(data[7])[0]
-    info["high_school"] = getSlash(data[7])[1]
+    info["hometown"] = getSlash(data[8])[0]
+    info["high_school"] = getSlash(data[8])[1]
     info["height"] = data[5]
-    info["weight"] = data[6]
+    info["weight"] = data[7]
     return info
 
 def Northeastern(soup):
@@ -224,12 +224,12 @@ def NortheasternSanitize(data):
     info["link"] = data[1]
     info["first_name"] = data[2].split(" ")[0]
     info["last_name"] = data[2].split(" ")[1]
-    info["year"] = yearShortToLong(data[2])
-    info["hometown"] = data[5]
-    info["high_school"] = data[6]
-    info["height"] = toInches(data[3])
-    info["weight"] = data[4]
-    info["major"] = data[8]
+    info["year"] = yearShortToLong(data[3])
+    info["hometown"] = data[6]
+    info["high_school"] = data[7]
+    info["height"] = toInches(data[4])
+    info["weight"] = data[5]
+    info["major"] = data[9]
     return info
 
 def OKCity(soup):
@@ -243,7 +243,7 @@ def OKCitySanitize(data):
     info["year"] = yearShortToLong(data[5])
     info["hometown"] = getSlash(data[6])[0]
     info["high_school"] = getSlash(data[6])[1]
-    info["height"] = data[3]
+    info["height"] = toInches(data[3])
     info["weight"] = data[4]
     return info
 
