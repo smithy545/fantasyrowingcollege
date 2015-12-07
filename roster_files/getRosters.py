@@ -314,7 +314,7 @@ def StanfordSanitize(data):
     info = {}
     info["link"] = data[0]
     info["first_name"] = data[1].split(",")[1].strip()
-    info["last_name"] = data[1].split(",")[1].strip()
+    info["last_name"] = data[1].split(",")[0].strip()
     info["year"] = yearShortToLong(data[4])
     info["hometown"] = getParentheses(data[6])[0]
     info["high_school"] = getParentheses(data[6])[1]
