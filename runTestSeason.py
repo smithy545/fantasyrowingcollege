@@ -47,7 +47,7 @@ def getDate(d):
 
 races = {}
 rs = wb["Races"]
-for r in range(2,24):
+for r in range(2,25):
     name = rs.cell(row=r, column=1).value
     date = rs.cell(row=r, column=3).value
     races[name] = {"teams":[],
@@ -81,8 +81,7 @@ for sheet in sheets:
 
 print "\nRaces:"
 for race in races:
-    if len(races[race]["teams"]) < 5:
-        print race, races[race]["teams"]
+    print race, races[race]["teams"]
 '''
 for dual in duals:
     print dual
