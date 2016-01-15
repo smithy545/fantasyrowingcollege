@@ -30,9 +30,9 @@ sheets = ['Wisconsin',
           ]
 
 def getTime(t):
-    if type(d) == UnicodeType:
+    if type(t) == UnicodeType:
         try:
-            return datetime.datetime.strptime(d[3:],'%M:%S.%f').time()
+            return datetime.datetime.strptime(t[3:],'%M:%S.%f').time()
         except:
             return t
     else:
@@ -45,14 +45,15 @@ def getDate(d):
         return d
 
 
+
 races = {}
 rs = wb["Races"]
 for r in range(2,25):
     name = rs.cell(row=r, column=1).value
     date = rs.cell(row=r, column=3).value
-    races[name] = {"teams":[],
-                   "date":date,
-                   "results":{"1V8":[],"2V8":[],"3V8":[],"4V8":[],"5V8":[],"1F8":[],"1V4":[]}
+    races[name] = {"teams":[],  # Teams racing
+                   "date":date, # Date of race
+                   "results":[] # Order of results 1V8,2V8,3V8,4V8,5V8,1F8,1V4
                    }
 duals = []
 
@@ -60,29 +61,36 @@ for sheet in sheets:
     ws = wb[sheet]
     print sheet
     for col in range(3,21):
-        for row in range(1,9):
-            d = ws.cell(row=row, column=col).value
-            if d:
-                date = ""
-                if row == 1:
-                    date = getDate(d)
-                elif row == 2:
-                    if d.startswith("v "):
-                        versus = d[2:]
-                        results = []
-                        duals.append({"sheet":sheet,
-                                      "teams":versus,
-                                      "date":date,
-                                      "results":results})
-                    else:
-                        races[d]["teams"].append(sheet)
-                        #races[d]["results"].append(0)
-                            
+        race = ws.cell(row=2, column=col).value
+        if not race:
+            continue
+        date = ws.cell(row=1, column=col).value
+        res = []
+        for i in range(3,10):
+            res.append(ws.cell(row=i, column=col).value)
+        if race.startswith("v "):
+            notexists = True
+            for dual in duals:
+                if sheet in dual["teams"] and race[2:] in dual["teams"] and date == dual["date"]:
+                    dual["results"].append(res)
+                    notexists = False
+            if notexists:
+                duals.append({"teams":[sheet, race[2:]],
+                              "date":date,
+                              "results":[res]})
+        else:
+            races[race]["teams"].append(sheet)
+            races[race]["results"].append(res)
+
 
 print "\nRaces:"
 for race in races:
     print race, races[race]["teams"]
-'''
+
+print "\nDuals"
 for dual in duals:
-    print dual
-'''
+    print dual["teams"]
+    for res in dual["results"]:
+        if res[0]:
+            print "V8:",res[0].strftime("%M:%S.%f")
+
