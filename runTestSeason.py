@@ -29,23 +29,6 @@ sheets = ['Wisconsin',
           'Hobart'
           ]
 
-def getTime(t):
-    if type(t) == UnicodeType:
-        try:
-            return datetime.datetime.strptime(t[3:],'%M:%S.%f').time()
-        except:
-            return t
-    else:
-        return t
-
-def getDate(d):
-    try:
-        return d.date()
-    except:
-        return d
-
-
-
 races = {}
 rs = wb["Races"]
 for r in range(2,25):
