@@ -1,3 +1,5 @@
+import operator
+
 class RaceList:
     def __init__(self, races=None):
         if races is None:
@@ -63,6 +65,5 @@ class Race:
 
         return fastest[0]
 
-    def getOrdered(self):        
-        return sorted(self.races, operator.itemgetter(1))
-            
+    def getOrdered(self):
+        return sorted(self.results.items())            

@@ -1,6 +1,7 @@
 from openpyxl import Workbook, load_workbook
 from elo_files.elo_compare import *
 from Race import *
+from calcPoints import generateCMAX
 from getPlayers import getPlayers
 import matplotlib.pyplot as plt
 import datetime
@@ -84,7 +85,7 @@ def getRaces(sheets = ['Wisconsin',
                         dual.addResult(sheet, res)
                         notexists = False
                 if notexists:
-                    duals.addRace(Race("dual",date,teams=[sheet, race[2:]],results={sheet:res}))
+                    duals.addRace(Race(sheet+" v "+race[2:],date,teams=[sheet, race[2:]],results={sheet:res}))
             else:
                 races.addTeamTo(race, sheet)
                 races.addResultTo(race, sheet, res)
@@ -94,8 +95,9 @@ def getRaces(sheets = ['Wisconsin',
 
 def main():
     races, duals = getRaces()
-    players = getPlayers(wb)
+    players = getPlayers(wb, races, duals)
 
+    ''' Print out race info and whatnot
     print "\nRaces:"
     for race in races:
         print race.name
@@ -113,8 +115,34 @@ def main():
                 print "V8:",res[0].strftime("%M:%S.%f")
         print ""
 
+    '''
+
+    cmax = generateCMAX()
+
+    prompt = raw_input("?")
+    while prompt != "q":
+        p = players.getPlayer(prompt)
+        print prompt
+        if p:
+            print p.getPointsDetailed(cmax)
+        prompt = raw_input("?")
+
+
+    wbout = Workbook()
+    ws1 = wbout.active
+    ws1.title = "Player Rankings"
+    print len(players)
+
+    outplayers = []
     for player in players:
-        print player.getPoints()
+        points = player.getPoints(cmax)
+        outplayers.append([player.team, player.name, points, points/len(player.races)])
+
+    for i, p in enumerate(outplayers):
+        for j, e in enumerate(p):
+            ws1.cell(row = i+1, column=j+1, value=e)
+        print p
+    wbout.save(filename = "test.xlsx")
 
 
 if __name__=="__main__":

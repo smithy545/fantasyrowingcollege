@@ -1,3 +1,6 @@
+from datetime import datetime, date
+from calcPoints import *
+
 class Player:
     def __init__(self, name, team, races=None):
         self.name = name
@@ -12,18 +15,55 @@ class Player:
     def __unicode__(self):
         return unicode(player.name)
 
-    def getPoints(self):
+    def getPoints(self, cmaxTable):
         points = 0
         for race in self.races:
-            order = race.getOrdered()
-            index = -1
-            for i, team in enumerate(order):
-                if team[0] == self.team:
-                    index = i
-                    break
-            i = 0
-            while i < index:
-                points += 
+            mytime = race.results[self.team][0]
+            if mytime == None:
+                continue
+            for team, res in race.results.iteritems():
+                if team != self.team and res[0]:
+                    #print race.name, team, race.date
+                    c1 = getcmax(self.team, race.date, cmaxTable)
+                    c2 = getcmax(team, race.date, cmaxTable)
+                    t1 = datetime.combine(date.today(),mytime)
+                    t2 = datetime.combine(date.today(),res[0])
+                    if res[0] > mytime:
+                        cmaxdelta = c2 - c1
+                        movdelta = t2 - t1
+                        points += pointFormula(cmaxdelta, movdelta.total_seconds())[0]
+                    else:
+                        cmaxdelta = c1 - c2
+                        movdelta = t1 - t2
+                        points += pointFormula(cmaxdelta, movdelta.total_seconds())[1]
+        self.points = points
+        return points
+    
+    def getPointsDetailed(self, cmaxTable):
+        points = 0
+        for race in self.races:
+            print race.name, race.teams
+            mytime = race.results[self.team][0]
+            if mytime == None:
+                continue
+            for team, res in race.results.iteritems():
+                if team != self.team and res[0]:
+                    c1 = getcmax(self.team, race.date, cmaxTable)
+                    c2 = getcmax(team, race.date, cmaxTable)
+                    t1 = datetime.combine(date.today(),mytime)
+                    t2 = datetime.combine(date.today(),res[0])
+                    if res[0] > mytime:
+                        cmaxdelta = c2 - c1
+                        movdelta = t2 - t1
+                        print "cmax,mov ",cmaxdelta,movdelta,pointFormula(cmaxdelta, movdelta.total_seconds())
+                        points += pointFormula(cmaxdelta, movdelta.total_seconds())[0]
+                    else:
+                        cmaxdelta = c1 - c2
+                        movdelta = t1 - t2
+                        print "cmax,mov ",cmaxdelta,movdelta,pointFormula(cmaxdelta, movdelta.total_seconds())
+                        points += pointFormula(cmaxdelta, movdelta.total_seconds())[1]
+        self.points = points
+        return points
 
 class PlayerList:
     def __init__(self):
@@ -31,6 +71,9 @@ class PlayerList:
 
     def __iter__(self):
         return iter(self.players)
+
+    def __len__(self):
+        return len(self.players)
 
     def getPlayer(self, name):
         for p in self.players:
@@ -42,7 +85,7 @@ class PlayerList:
         self.players.append(Player(name, team, races))
         self.players.sort(key=lambda x:x.name)
 
-def getPlayers(wb, sheets=['Wisconsin',
+def getPlayers(wb, races, duals, sheets=['Wisconsin',
                           'Brown',
                           'Washington',
                           'Stanford',
@@ -73,6 +116,19 @@ def getPlayers(wb, sheets=['Wisconsin',
         ws = wb[sheet]
         for col in range(3,21):
             race = ws.cell(row=2,column=col).value
+            if not race:
+                continue
+            date = ws.cell(row=1, column=col).value
+            if race.startswith("v "):
+                for r in duals:
+                    if date == r.date and sheet in r.teams and race[2:] in r.teams:
+                        race = r
+                        break
+            elif not race.startswith("IRA"):
+                race = races.getRace(race)
+            else:
+                continue
+            
             for row in range(11,20):
                 cellval = ws.cell(row=row,column=col).value
                 if cellval and not any(cellval == p.name for p in players):
