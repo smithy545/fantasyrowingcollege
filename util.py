@@ -1,5 +1,4 @@
-from openpyxl import Workbook, load_workbook
-from datetime import datetime
+from openpyxl import load_workbook
 
 def getAbbr(teamname):
     abbrs = {'Wisconsin':'Wisconsin',
@@ -30,7 +29,7 @@ def getAbbr(teamname):
     return abbrs[teamname]
 
 def generateCMAX():
-    wb = load_workbook("fullcmax.xlsx")
+    wb = load_workbook("data/fullcmax.xlsx")
     ws = wb.active
 
     cmax = {}
@@ -49,23 +48,6 @@ def generateCMAX():
     
     return cmax
 
-def getcmax(team, date, cmaxTable):
-    team = getAbbr(team)
-
-    colDate = date
-    for key in cmaxTable:
-        if key != "max" and colDate < key:
-            colDate = key
-
-    if colDate == date:
-        colDate = cmaxTable["max"]
-
-    for t in cmaxTable[colDate]:
-        if team == t[0]:
-            return t[1]
-
-    raise NameError("Could not find:"+team)
-
 
 def pointFormula(deltaCMAX, deltaMOV):
     if deltaCMAX >= 0:
@@ -75,3 +57,6 @@ def pointFormula(deltaCMAX, deltaMOV):
     winner = deltaMOV+deltaCMAX
     loser = deltaMOV+deltaCMAX
     return (winner, loser)
+
+
+

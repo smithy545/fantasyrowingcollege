@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from calcPoints import *
+from util import getAbbr, pointFormula
 
 class Player:
     def __init__(self, name, team, races=None):
@@ -23,7 +23,6 @@ class Player:
                 continue
             for team, res in race.results.iteritems():
                 if team != self.team and res[0]:
-                    #print race.name, team, race.date
                     c1 = getcmax(self.team, race.date, cmaxTable)
                     c2 = getcmax(team, race.date, cmaxTable)
                     t1 = datetime.combine(date.today(),mytime)
@@ -85,6 +84,23 @@ class PlayerList:
         self.players.append(Player(name, team, races))
         self.players.sort(key=lambda x:x.name)
 
+def getcmax(team, date, cmaxTable):
+    team = getAbbr(team)
+
+    colDate = date
+    for key in cmaxTable:
+        if key != "max" and colDate < key:
+            colDate = key
+
+    if colDate == date:
+        colDate = cmaxTable["max"]
+
+    for t in cmaxTable[colDate]:
+        if team == t[0]:
+            return t[1]
+
+    raise NameError("Could not find:"+team)
+
 def getPlayers(wb, races, duals, sheets=['Wisconsin',
                           'Brown',
                           'Washington',
@@ -137,3 +153,5 @@ def getPlayers(wb, races, duals, sheets=['Wisconsin',
                     players.getPlayer(cellval.strip()).races.append(race)
 
     return players
+
+
