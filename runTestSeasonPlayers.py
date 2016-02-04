@@ -32,7 +32,7 @@ sheets = ['Wisconsin',
           'Hobart'
           ]
 
-wb = load_workbook('testseason.xlsx')
+wb = load_workbook('2015 Spring Season.xlsx')
 
 def getRaces(sheets = ['Wisconsin',
               'Brown',
@@ -142,7 +142,7 @@ def main():
         for j, e in enumerate(p):
             ws1.cell(row = i+1, column=j+1, value=e)
         print p
-    wbout.save(filename = "test.xlsx")
+    wbout.save(filename = "Player Rankings-generated.xlsx")
 
 
 if __name__=="__main__":
