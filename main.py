@@ -66,11 +66,42 @@ def main():
     for player in players:
         points = player.getPoints(cmax)
         outplayers.append([player.team, player.name, points, points/len(player.races)])
+        
+        ps = wbout.create_sheet()          # Player sheet
+        ps.title = player.name
+        ps.cell(row=1,column=1,value="Name:")
+        ps.cell(row=1,column=2,value=player.name)
+        ps.cell(row=2,column=1,value="Team:")
+        ps.cell(row=2,column=2,value=player.team)
+        ps.cell(row=3,column=1,value="Avg Season Points:")
+        ps.cell(row=3,column=2,value=points/len(player.races))
+        ps.cell(row=4,column=1,value="Total Season Points:")
+        ps.cell(row=4,column=2,value=points)
+
+        schema = player.getSchema(cmax)
+        curRow = 6
+        for date, info in schema.iteritems():
+            ps.cell(row=curRow,column=1,value=date)
+            ps.cell(row=curRow,column=2,value="CMax")
+            ps.cell(row=curRow,column=3,value="Time")
+            pointsearned = 0
+            curRow += 1
+            for s in info:
+                ps.cell(row=curRow,column=1,value=s["team"])
+                ps.cell(row=curRow,column=2,value=s["cmax"])
+                ps.cell(row=curRow,column=3,value=s["time"])
+                pointsearned += s["points"]
+                curRow += 1
+            ps.cell(row=curRow,column=1,value="Points earned")
+            ps.cell(row=curRow,column=2,value=pointsearned)
+            curRow += 1
+        
+
+    ws1 = wbout["Player Rankings"]
 
     for i, p in enumerate(outplayers):
         for j, e in enumerate(p):
             ws1.cell(row = i+1, column=j+1, value=e)
-        print p
     wbout.save(filename = "data/Player Rankings-generated.xlsx")
 
 

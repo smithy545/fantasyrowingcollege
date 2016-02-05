@@ -1,39 +1,5 @@
 import operator
 
-class RaceList:
-    def __init__(self, races=None):
-        if races is None:
-            races = []
-        self.races = []
-
-    def __iter__(self):
-        return iter(self.races)
-
-    def __str__(self):
-        out = ""
-        for race in self.races:
-            out += race.name+"\n"
-        return out
-
-    def addRace(self, race):
-        self.races.append(race)
-        self.races.sort(key=lambda x:x.getDatestring())
-
-    def getRace(self, racename):
-        for race in self.races:
-            if race.name == racename:
-                return race
-
-    def addTeamTo(self, racename, team):
-        for race in self.races:
-            if race.name == racename:
-                race.addTeam(team)
-
-    def addResultTo(self, racename, team, results):
-        for race in self.races:
-            if race.name == racename:
-                race.addResult(team, results)
-
 class Race:
     def __init__(self, name, date, teams=None, results=None):
         self.name = name
@@ -66,7 +32,44 @@ class Race:
         return fastest[0]
 
     def getOrdered(self):
-        return sorted(self.results.items())            
+        raise Exception("I'm too lazy to code a sorting algorithm")
+
+class RaceList:
+    def __init__(self, races=None):
+        if races is None:
+            races = []
+        self.races = []
+
+    def __iter__(self):
+        return iter(self.races)
+
+    def __str__(self):
+        out = ""
+        for race in self.races:
+            out += race.name+"\n"
+        return out
+
+    def __getitem__(self,index):
+        return self.races[index]
+
+    def addRace(self, race):
+        self.races.append(race)
+        self.races.sort(key=lambda x:x.getDatestring())
+
+    def getRace(self, racename):
+        for race in self.races:
+            if race.name == racename:
+                return race
+
+    def addTeamTo(self, racename, team):
+        for race in self.races:
+            if race.name == racename:
+                race.addTeam(team)
+
+    def addResultTo(self, racename, team, results):
+        for race in self.races:
+            if race.name == racename:
+                race.addResult(team, results)            
 
 def getRaces(wb, sheets = ['Wisconsin',
               'Brown',

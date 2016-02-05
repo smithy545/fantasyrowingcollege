@@ -21,11 +21,11 @@ class Player:
             mytime = race.results[self.team][0]
             if mytime == None:
                 continue
+            c1 = getcmax(self.team, race.date, cmaxTable)
+            t1 = datetime.combine(date.today(),mytime)
             for team, res in race.results.iteritems():
                 if team != self.team and res[0]:
-                    c1 = getcmax(self.team, race.date, cmaxTable)
                     c2 = getcmax(team, race.date, cmaxTable)
-                    t1 = datetime.combine(date.today(),mytime)
                     t2 = datetime.combine(date.today(),res[0])
                     if res[0] > mytime:
                         cmaxdelta = c2 - c1
@@ -34,36 +34,20 @@ class Player:
                     else:
                         cmaxdelta = c1 - c2
                         movdelta = t1 - t2
-                        points += pointFormula(cmaxdelta, movdelta.total_seconds())[1]
-        self.points = points
-        return points
-    
-    def getPointsDetailed(self, cmaxTable):
-        points = 0
-        for race in self.races:
-            print race.name, race.teams
-            mytime = race.results[self.team][0]
-            if mytime == None:
-                continue
-            for team, res in race.results.iteritems():
-                if team != self.team and res[0]:
-                    c1 = getcmax(self.team, race.date, cmaxTable)
-                    c2 = getcmax(team, race.date, cmaxTable)
-                    t1 = datetime.combine(date.today(),mytime)
-                    t2 = datetime.combine(date.today(),res[0])
-                    if res[0] > mytime:
-                        cmaxdelta = c2 - c1
-                        movdelta = t2 - t1
-                        print "cmax,mov ",cmaxdelta,movdelta,pointFormula(cmaxdelta, movdelta.total_seconds())
-                        points += pointFormula(cmaxdelta, movdelta.total_seconds())[0]
-                    else:
-                        cmaxdelta = c1 - c2
-                        movdelta = t1 - t2
-                        print "cmax,mov ",cmaxdelta,movdelta,pointFormula(cmaxdelta, movdelta.total_seconds())
                         points += pointFormula(cmaxdelta, movdelta.total_seconds())[1]
         self.points = points
         return points
 
+    def getSchema(self, cmaxTable):
+        out = {}
+        for race in self.races:
+            raceschema = []
+            for team, res in race.results.iteritems():
+                if res[0]:
+                    raceschema.append({"team":team,"cmax":getcmax(team, race.date, cmaxTable),"time":res[0],"points":1})
+            out[race.date.date()] = raceschema
+        return out
+    
 class PlayerList:
     def __init__(self):
         self.players = []
