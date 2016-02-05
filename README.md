@@ -2,15 +2,9 @@
 
 Quick guide to the repo:
 
-- Roster files are the html pages for the rosters of the 24 IRA schools that competed in the mens V8 at IRA's as well as the scraper files that grab the athletes from them
-
-- Sql just contains some test databases I was fooling around with while figuring out sqlite3 as well as helper methods I use to run sql commands
-
-- The big crews contains a spreadsheet with some pretty fleshed out race results from many teams in the IRA over the 2014-2015 season. It was all typed in by hand and was a bitch to compile. In the spreadsheet there is also the elo ratings over the course of the seasons for these teams
-
-- The graphics folder contains various visuals to check how the elo and points functions map against what I expected
-
-- The code is in .py files, the databases are .db and there's a scratch word file I was using to test formula stuff as a .docx
+- All python in the main directory is the code I'm working on right now. Atm it's code that ranks all the players according to their results over the season
+- In the other directories I have old code that I had been working on relating to this project. Some of it I plan to return two (schedule generator, rower database etc.) some I do not (elo ratings, python drafting system etc.)
+- I don't guarantee any of the old code will work without some minor tweaks to the imports and whatnot but the code in the main directory should work fine
 
 So this is my college rowing fantasy code. It's kind of a mish mash at this point but I'd love to start developing it into a website soon.
 
