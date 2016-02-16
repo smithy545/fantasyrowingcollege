@@ -10,14 +10,17 @@ class Player:
         self.races = races
 
     def __str__(self):
-        return str(player.name)
+        return str(self.name)
     
     def __unicode__(self):
-        return unicode(player.name)
+        return unicode(self.name)
 
     def getPoints(self, cmaxTable):
         points = 0
         for race in self.races:
+            if ("IRA" in race.name) or ("EARC" in race.name):
+                print "Skipping",race.name,"..."
+                continue
             mytime = race.results[self.team][0]
             if mytime == None:
                 continue
@@ -37,6 +40,12 @@ class Player:
                         points += pointFormula(cmaxdelta, movdelta.total_seconds())[1]
         self.points = points
         return points
+
+    def getNumCompetitors(self):
+        num = 0
+        for race in self.races:
+            num += len(race.results.keys()) - 1
+        return num
 
     def getSchema(self, cmaxTable):
         out = {}
@@ -124,10 +133,8 @@ def getPlayers(wb, races, duals, sheets=['Wisconsin',
                     if date == r.date and sheet in r.teams and race[2:] in r.teams:
                         race = r
                         break
-            elif not race.startswith("IRA"):
-                race = races.getRace(race)
             else:
-                continue
+                race = races.getRace(race)
             
             for row in range(11,20):
                 cellval = ws.cell(row=row,column=col).value

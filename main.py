@@ -2,13 +2,14 @@ from openpyxl import Workbook, load_workbook
 from Races import getRaces
 from Players import getPlayers
 from util import *
+import sqlite3
 
 def main():
     sheets = ['Wisconsin',
               'Brown',
               'Washington',
               'Stanford',
-              'Pennsylvania',
+              #'Pennsylvania',
               'Princeton',
               'BU',
               'Navy',
@@ -19,10 +20,10 @@ def main():
               'Harvard',
               'FIT',
               'Northeastern',
-              'Cornell',
+              #'Cornell',
               'G Washington',
-              'Santa Clara',
-              'OK City',
+              #'Santa Clara',
+              #'OK City',
               'Oregon State',
               'Syracuse',
               'Drexel',
@@ -33,8 +34,8 @@ def main():
     wb = load_workbook('data/2015 Spring Season.xlsx')
 
     races, duals = getRaces(wb)
-    players = getPlayers(wb, races, duals)
-
+    players = getPlayers(wb, races, duals, sheets)
+    '''
     # Print out race info and whatnot
     print "\nRaces:"
     for race in races:
@@ -53,7 +54,7 @@ def main():
             if res[0]:
                 print "V8:",res[0].strftime("%M:%S.%f")
         print ""
-
+    '''
 
     # Generate player rankings and output them to "Player Rankings-generated.xlsx"
     cmax = generateCMAX()
@@ -65,7 +66,9 @@ def main():
     outplayers = []
     for player in players:
         points = player.getPoints(cmax)
-        outplayers.append([player.team, player.name, points, points/len(player.races)])
+        first = player.name.split(' ')[0]
+        last = player.name.split(' ')[1]
+        outplayers.append([player.team, first, last, points, points/player.getNumCompetitors()])
         
         ps = wbout.create_sheet()          # Player sheet
         ps.title = player.name
@@ -98,12 +101,19 @@ def main():
         
 
     ws1 = wbout["Player Rankings"]
-
+    conn = sqlite3.connect("C:\\Users\\Philip Smith\\Documents\\github\\djangopractice\\rowing\\_notused\\teams.db")
+    c = conn.cursor()
+    
     for i, p in enumerate(outplayers):
+        found = False
+        stmt = u'SELECT * FROM athlete WHERE first_name="'+unicode(p[1])+u'" AND last_name="'+unicode(p[2])+u'"'
+        #if c.execute(stmt).fetchone() == None:
+        #   print p[0], p[1], p[2],"not found"
         for j, e in enumerate(p):
             ws1.cell(row = i+1, column=j+1, value=e)
+            
     wbout.save(filename = "data/Player Rankings-generated.xlsx")
-
+    conn.close()
 
 if __name__=="__main__":
     main()
