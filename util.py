@@ -33,7 +33,7 @@ def generateCMAX():
     ws = wb.active
 
     cmax = {}
-
+    cmax["min"] = 0
     for col in range(3,26):
         date = ws.cell(row=3,column=col).value
         if date:
@@ -44,19 +44,20 @@ def generateCMAX():
                     rating = ws.cell(row=row, column=col+1).value
                     if rating != None:
                         cmax[date].append((team,rating))
-            cmax["max"] = date
+            if cmax["min"] == 2:
+                cmax["min"] = date
+            elif type(cmax["min"]) == int:
+                cmax["min"] += 1
     
     return cmax
 
 
 def pointFormula(deltaCMAX, deltaMOV):
     if deltaCMAX >= 0:
-        winner = (deltaMOV-deltaCMAX)
-        loser = (deltaCMAX-deltaMOV)
+        winner = deltaMOV+deltaCMAX + 10
+        loser = deltaCMAX-deltaMOV - 2.5
         return (winner, loser)
-    winner = deltaMOV+deltaCMAX
-    loser = deltaMOV+deltaCMAX
+    winner = deltaMOV+deltaCMAX + 7.5
+    loser = deltaCMAX-deltaMOV + 5
     return (winner, loser)
-
-
 

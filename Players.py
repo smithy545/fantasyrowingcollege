@@ -28,14 +28,12 @@ class Player:
             t1 = datetime.combine(date.today(),mytime)
             for team, res in race.results.iteritems():
                 if team != self.team and res[0]:
-                    c2 = getcmax(team, race.date, cmaxTable)
+                    cmaxdelta = c1 - getcmax(team, race.date, cmaxTable)
                     t2 = datetime.combine(date.today(),res[0])
                     if res[0] > mytime:
-                        cmaxdelta = c2 - c1
                         movdelta = t2 - t1
                         points += pointFormula(cmaxdelta, movdelta.total_seconds())[0]
                     else:
-                        cmaxdelta = c1 - c2
                         movdelta = t1 - t2
                         points += pointFormula(cmaxdelta, movdelta.total_seconds())[1]
         self.points = points
@@ -81,13 +79,21 @@ def getcmax(team, date, cmaxTable):
     team = getAbbr(team)
 
     colDate = date
+    dates = []
     for key in cmaxTable:
-        if key != "max" and colDate < key:
-            colDate = key
+        if key != "min" and colDate >= key:
+            dates.append(key)
 
-    if colDate == date:
-        colDate = cmaxTable["max"]
+    if len(dates) == 0:
+        colDate = cmaxTable["min"]
+    else:
+        colDate = max(dates)
 
+    for t in cmaxTable[colDate]:
+        if team == t[0]:
+            return t[1]
+
+    colDate = cmaxTable["min"]
     for t in cmaxTable[colDate]:
         if team == t[0]:
             return t[1]
