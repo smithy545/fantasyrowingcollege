@@ -19,8 +19,9 @@ class Player:
         points = 0
         for race in self.races:
             if ("IRA" in race.name) or ("EARC" in race.name):
-                print "Skipping",race.name,"..."
+                #print "Skipping",race.name,"..."
                 continue
+            
             mytime = race.results[self.team][0]
             if mytime == None:
                 continue
@@ -52,7 +53,10 @@ class Player:
             for team, res in race.results.iteritems():
                 if res[0]:
                     raceschema.append({"team":team,"cmax":getcmax(team, race.date, cmaxTable),"time":res[0],"points":1})
-            out[race.date.date()] = raceschema
+            if out.get(race.date.date()):
+                out[race.date.date()].append(raceschema)
+            else:
+                out[race.date.date()] = [raceschema]
         return out
     
 class PlayerList:
@@ -61,7 +65,7 @@ class PlayerList:
 
     def __iter__(self):
         return iter(self.players)
-
+    
     def __len__(self):
         return len(self.players)
 

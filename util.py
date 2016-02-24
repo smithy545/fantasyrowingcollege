@@ -54,10 +54,10 @@ def generateCMAX():
 
 def pointFormula(deltaCMAX, deltaMOV):
     if deltaCMAX >= 0:
-        winner = deltaMOV+deltaCMAX + 10
-        loser = deltaCMAX-deltaMOV - 2.5
+        winner = deltaMOV+deltaCMAX# + 10
+        loser = deltaCMAX-deltaMOV# - 2.5
         return (winner, loser)
-    winner = deltaMOV+deltaCMAX + 7.5
-    loser = deltaCMAX-deltaMOV + 5
+    winner = deltaMOV+deltaCMAX# + 7.5
+    loser = deltaCMAX-deltaMOV# + 5
     return (winner, loser)
 

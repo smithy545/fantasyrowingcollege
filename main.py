@@ -80,25 +80,23 @@ def main():
         ps.cell(row=3,column=2,value=points/len(player.races))
         ps.cell(row=4,column=1,value="Total Season Points:")
         ps.cell(row=4,column=2,value=points)
-
+    
         schema = player.getSchema(cmax)
         curRow = 6
-        for date, info in schema.iteritems():
-            ps.cell(row=curRow,column=1,value=date)
-            ps.cell(row=curRow,column=2,value="CMax")
-            ps.cell(row=curRow,column=3,value="Time")
-            pointsearned = 0
-            curRow += 1
-            for s in info:
-                ps.cell(row=curRow,column=1,value=s["team"])
-                ps.cell(row=curRow,column=2,value=s["cmax"])
-                ps.cell(row=curRow,column=3,value=s["time"])
-                pointsearned += s["points"]
+        for date, infoList in schema.iteritems():
+            for info in infoList:
+                ps.cell(row=curRow,column=1,value=date)
+                ps.cell(row=curRow,column=2,value="CMax")
+                ps.cell(row=curRow,column=3,value="Time")
                 curRow += 1
-            ps.cell(row=curRow,column=1,value="Points earned")
-            ps.cell(row=curRow,column=2,value=pointsearned)
-            curRow += 1
-        
+                for s in info:
+                    ps.cell(row=curRow,column=1,value=s["team"])
+                    ps.cell(row=curRow,column=2,value=s["cmax"])
+                    ps.cell(row=curRow,column=3,value=s["time"])
+                    curRow += 1
+                ps.cell(row=curRow,column=1,value="# of races")
+                ps.cell(row=curRow,column=2,value=player.getNumCompetitors())
+                curRow += 1
 
     ws1 = wbout["Player Rankings"]
     conn = sqlite3.connect("C:\\Users\\Philip Smith\\Documents\\github\\djangopractice\\rowing\\_notused\\teams.db")
